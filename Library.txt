@@ -1021,7 +1021,7 @@ function Linux.Create(config)
 
             local FillBar = Linux.Instance("Frame", {
                 Parent = SliderBar,
-                BackgroundColor3 = Color3.fromRGB(200, 200, 200),
+                BackgroundColor3 = Linux.Theme.Accent,
                 Size = UDim2.new(0, 0, 1, 0),
                 Position = UDim2.new(0, 0, 0, 0),
                 ZIndex = 1
@@ -1530,25 +1530,7 @@ function Linux.Create(config)
                 end
             end)
 
-            local function SetColor(newColor)
-                local h, s, v = newColor:ToHSV()
-                Saturation = s
-                Value = v
-                PaletteKnob.Position = UDim2.new(Saturation, -4, 1 - Value, -4)
-                UpdateColor()
-            end
-
-            local function GetColor()
-                return Color3.fromHSV(Hue, Saturation, Value)
-            end
-
-            UpdateColor()
-
-            return {
-                Instance = ColorPicker,
-                SetColor = SetColor,
-                GetColor = GetColor
-            }
+            return ColorPicker
         end
 
         function TabElements.Paragraph(config)
@@ -1567,77 +1549,108 @@ function Linux.Create(config)
                 CornerRadius = UDim.new(0, 4)
             })
 
-            local ParagraphTitle = Linux.Instance("TextLabel", {
+            local Title = Linux.Instance("TextLabel", {
                 Parent = ParagraphFrame,
                 BackgroundTransparency = 1,
-                Size = UDim2.new(1, -10, 0, 16),
-                Position = UDim2.new(0, 5, 0, 0),
+                Size = UDim2.new(1, -10, 0, 20),
+                Position = UDim2.new(0, 5, 0, 5),
                 Font = Enum.Font.SourceSansBold,
-                Text = config.Title or "",
-                TextColor3 = Color3.fromRGB(255, 255, 255),
+                Text = config.Title or "Paragraph",
+                TextColor3 = Linux.Theme.Text,
                 TextSize = 16,
                 TextXAlignment = Enum.TextXAlignment.Left,
                 ZIndex = 1
             })
 
-            local ParagraphContent = Linux.Instance("TextLabel", {
+            local Content = Linux.Instance("TextLabel", {
                 Parent = ParagraphFrame,
                 BackgroundTransparency = 1,
                 Size = UDim2.new(1, -10, 0, 0),
-                Position = UDim2.new(0, 5, 0, 18),
-                AutomaticSize = Enum.AutomaticSize.Y,
+                Position = UDim2.new(0, 5, 0, 25),
                 Font = Enum.Font.SourceSans,
-                Text = config.Content or "Description",
+                Text = config.Content or "Content",
                 TextColor3 = Linux.Theme.Text,
                 TextSize = 14,
                 TextXAlignment = Enum.TextXAlignment.Left,
                 TextWrapped = true,
+                AutomaticSize = Enum.AutomaticSize.Y,
                 ZIndex = 1
             })
 
-            local FramePadding = Linux.Instance("UIPadding", {
+            local ParagraphPadding = Linux.Instance("UIPadding", {
                 Parent = ParagraphFrame,
-                PaddingTop = UDim.new(0, 5),
                 PaddingBottom = UDim.new(0, 5)
             })
 
             local function SetTitle(newTitle)
-                ParagraphTitle.Text = tostring(newTitle)
-            end
-
-            local function GetTitle()
-                return ParagraphTitle.Text
+                Title.Text = tostring(newTitle)
             end
 
             local function SetContent(newContent)
-                ParagraphContent.Text = tostring(newContent)
-            end
-
-            local function GetContent()
-                return ParagraphContent.Text
+                Content.Text = tostring(newContent)
             end
 
             return {
                 Instance = ParagraphFrame,
                 SetTitle = SetTitle,
-                GetTitle = GetTitle,
-                SetContent = SetContent,
-                GetContent = GetContent
+                SetContent = SetContent
             }
         end
 
-        local TabElementsProxy = setmetatable({}, {
-            __index = function(_, key)
-                return TabElements[key]
-            end,
-            __newindex = function() end
-        })
+        function TabElements.Notification(config)
+            elementOrder = elementOrder + 1
+            local NotificationFrame = Linux.Instance("Frame", {
+                Parent = ElementContainer,
+                BackgroundColor3 = Linux.Theme.Element,
+                Size = UDim2.new(1, -5, 0, 30),
+                ZIndex = 1,
+                LayoutOrder = elementOrder
+            })
 
-        for k, v in pairs(TabElements) do
-            TabElementsProxy[k] = v
+            Linux.Instance("UICorner", {
+                Parent = NotificationFrame,
+                CornerRadius = UDim.new(0, 4)
+            })
+
+            local Label = Linux.Instance("TextLabel", {
+                Parent = NotificationFrame,
+                BackgroundTransparency = 1,
+                Size = UDim2.new(0.5, 0, 1, 0),
+                Position = UDim2.new(0, 5, 0, 0),
+                Font = Enum.Font.SourceSans,
+                Text = config.Name,
+                TextColor3 = Linux.Theme.Text,
+                TextSize = 14,
+                TextXAlignment = Enum.TextXAlignment.Left,
+                ZIndex = 1
+            })
+
+            local NotificationText = Linux.Instance("TextLabel", {
+                Parent = NotificationFrame,
+                BackgroundTransparency = 1,
+                Size = UDim2.new(0.5, -10, 1, 0),
+                Position = UDim2.new(0.5, 5, 0, 0),
+                Font = Enum.Font.SourceSans,
+                Text = config.Default or "No interaction yet",
+                TextColor3 = Linux.Theme.Text,
+                TextSize = 14,
+                TextXAlignment = Enum.TextXAlignment.Right,
+                TextTruncate = Enum.TextTruncate.AtEnd,
+                ZIndex = 1
+            })
+
+            local function SetText(newText)
+                NotificationText.Text = tostring(newText)
+            end
+
+            return {
+                Instance = NotificationFrame,
+                SetText = SetText,
+                GetText = function() return NotificationText.Text end
+            }
         end
 
-        return TabElementsProxy
+        return TabElements
     end
 
     return LinuxLib
