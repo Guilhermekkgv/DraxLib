@@ -6,12 +6,12 @@ local LocalPlayer = Players.LocalPlayer
 
 local Linux = {
     Theme = {
-        Background = Color3.fromRGB(18, 18, 18),
-        Element = Color3.fromRGB(21, 21, 21),
+        Background = Color3.fromRGB(7, 7, 7),
+        Element = Color3.fromRGB(7, 7, 7),
         Accent = Color3.fromRGB(255, 0, 0),
         Text = Color3.fromRGB(180, 180, 180),
         Toggle = Color3.fromRGB(40, 40, 40),
-        TabInactive = Color3.fromRGB(18, 18, 18),
+        TabInactive = Color3.fromRGB(7, 7, 7),
         DropdownOption = Color3.fromRGB(30, 30, 30)
     }
 }
@@ -56,7 +56,7 @@ function Linux:Notify(config)
     local Notification = Linux.Instance("Frame", {
         Parent = NotificationHolder,
         BackgroundColor3 = Linux.Theme.Background,
-        BackgroundTransparency = 0.2,
+        BackgroundTransparency = 0.05,
         Size = UDim2.new(0, notificationWidth, 0, notificationHeight),
         Position = UDim2.new(1, 10, 1, -notificationHeight - 10),
         ZIndex = 100
@@ -158,7 +158,7 @@ function Linux.Create(config)
     local Main = Linux.Instance("Frame", {
         Parent = LinuxUI,
         BackgroundColor3 = Linux.Theme.Background,
-        BackgroundTransparency = 0.2,
+        BackgroundTransparency = 0.05,
         Size = uiSize,
         Position = UDim2.new(0.5, -uiSize.X.Offset / 2, 0.5, -uiSize.Y.Offset / 2),
         Active = true,
@@ -174,7 +174,7 @@ function Linux.Create(config)
     local TopBar = Linux.Instance("Frame", {
         Parent = Main,
         BackgroundColor3 = Linux.Theme.Background,
-        BackgroundTransparency = 0.2,
+        BackgroundTransparency = 0.05,
         Size = UDim2.new(1, 0, 0, 25),
         ZIndex = 2
     })
@@ -323,7 +323,7 @@ function Linux.Create(config)
         local TabBtn = Linux.Instance("TextButton", {
             Parent = TabHolder,
             BackgroundColor3 = Linux.Theme.TabInactive,
-            BackgroundTransparency = 0.2,
+            BackgroundTransparency = 0.05,
             Size = UDim2.new(1, -5, 0, 28),
             Font = Enum.Font.SourceSans,
             Text = "",
